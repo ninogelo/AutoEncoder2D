@@ -12,7 +12,7 @@ class ImprovedAutoencoder(nn.Module):
         super(ImprovedAutoencoder, self).__init__()
 
         # Use a pre-trained VGG16 model as the encoder
-        vgg16 = models.vgg16(pretrained=True)
+        vgg16 = models.vgg16(weights=models.VGG16_Weights.DEFAULT)
         self.encoder = nn.Sequential(*list(vgg16.features.children())[:-1])  # Remove the last max-pooling layer
 
         # Decoder: Build a decoder to reconstruct images from the encoded features
@@ -29,7 +29,7 @@ class ImprovedAutoencoder(nn.Module):
             nn.ConvTranspose2d(64, 32, kernel_size=3, stride=2, padding=1, output_padding=1),
             nn.BatchNorm2d(32),
             nn.ReLU(),
-            nn.ConvTranspose2d(32, 1, kernel_size=3, stride=1, padding=1),
+            nn.ConvTranspose2d(32, 3, kernel_size=3, stride=1, padding=1),
             nn.Sigmoid()  # Use Sigmoid to keep the output between 0 and 1
         )
 
@@ -86,16 +86,14 @@ def main():
     # Set up the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # Define image transformations for the X-ray images
+    # Load the chest X-ray dataset with the updated transformation
+    data_dir = "./chest_xray_pneumonia/chest_xray"  # Path to your downloaded dataset
     transform = transforms.Compose([
         transforms.Resize((256, 256)),  # Resize images to 256x256
-        transforms.Grayscale(num_output_channels=1),  # Ensure the images are grayscale
+        transforms.Grayscale(num_output_channels=3),  # Convert grayscale to 3 channels
         transforms.ToTensor(),
-        transforms.Normalize(mean=[0.5], std=[0.5])  # Normalize images
+        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])  # Normalize images
     ])
-
-    # Load the chest X-ray dataset
-    data_dir = "./chest_xray_pneumonia/chest_xray"  # Path to your downloaded dataset
     dataset = datasets.ImageFolder(root=data_dir, transform=transform)
     data_loader = DataLoader(dataset, batch_size=32, shuffle=True)
 
