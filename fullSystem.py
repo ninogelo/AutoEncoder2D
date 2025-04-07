@@ -38,7 +38,7 @@ def calculate_compression_ratio(original_size, compressed_size):
 
 # Streamlit app
 def main():
-    st.title("Medical Image Compression Analysis")
+    st.title("Enhanced DWT Image Compression")
     st.write("Compare DWT and Autoencoder reconstructions")
 
     # Load model here to ensure it's available when needed
@@ -99,9 +99,6 @@ def main():
             axs[0,0].set_title("Original Image")
             axs[0,0].axis('off')
 
-            axs[0,1].imshow(dwt_image, cmap='gray')
-            axs[0,1].set_title("DWT Coefficients")
-            axs[0,1].axis('off')
 
             axs[0,2].imshow(reconstructed_ae)
             axs[0,2].set_title("Autoencoder Reconstruction")
