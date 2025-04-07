@@ -1,0 +1,72 @@
+digraph {
+	rankdir=TB size=10
+	1 [label=Start shape=ellipse]
+	2 [label="Input Medical Image" shape=parallelogram]
+	3 [label=Preprocessing]
+	4 [label="Enhanced DWT"]
+	5 [label="Cayley Transform"]
+	6 [label="Optimized Filters"]
+	7 [label="Horizontal Filtering"]
+	8 [label="High-Pass Filter"]
+	9 [label="Downsample Columns by 2"]
+	10 [label="Low-Pass Filter"]
+	11 [label="Downsample Columns by 2"]
+	12 [label="Directional Filter Bank"]
+	13 [label="High-Pass Branch"]
+	14 [label="Vertical Filtering (Multi-Angle 30°)"]
+	15 [label="Downsample Rows by 2 → HH Subband"]
+	16 [label="Low-Pass Branch"]
+	17 [label="Vertical Filtering (Multi-Angle 60°)"]
+	18 [label="Downsample Rows by 2 → HL Subband"]
+	19 [label="High-Pass Branch (Second Stage)"]
+	20 [label="Vertical Filtering (Multi-Angle 90°)"]
+	21 [label="Downsample Rows by 2 → LH Subband"]
+	22 [label="Low-Pass Branch (Second Stage)"]
+	23 [label="Vertical Filtering (Multi-Angle 120°)"]
+	24 [label="Downsample Rows by 2 → LL Subband"]
+	25 [label="Level 2 Decomposition (Repeat on LL Subband)"]
+	26 [label="Adaptive Thresholding"]
+	27 [label="Applied to HH, HL, LH Subbands"]
+	28 [label="Autoencoder Compression (LL Subband)"]
+	29 [label="Inverse Enhanced DWT"]
+	30 [label="Uses Adaptive Thresholded HH, HL, LH and Compressed LL"]
+	31 [label="Reconstructed Image"]
+	32 [label="Evaluation Metrics"]
+	33 [label="PSNR / SSIM (Image Quality)"]
+	34 [label="Edge Coherence (Preserved Structures)"]
+	35 [label="Clinical Validation (Medical Accuracy)"]
+	1 -> 2
+	2 -> 3
+	3 -> 4
+	4 -> 5
+	5 -> 6
+	6 -> 7
+	7 -> 8
+	8 -> 9
+	7 -> 10
+	10 -> 11
+	4 -> 12
+	12 -> 13
+	13 -> 14
+	14 -> 15
+	12 -> 16
+	16 -> 17
+	17 -> 18
+	12 -> 19
+	19 -> 20
+	20 -> 21
+	12 -> 22
+	22 -> 23
+	23 -> 24
+	24 -> 25
+	25 -> 26
+	26 -> 27
+	26 -> 28
+	28 -> 29
+	29 -> 30
+	30 -> 31
+	31 -> 32
+	32 -> 33
+	32 -> 34
+	32 -> 35
+}
