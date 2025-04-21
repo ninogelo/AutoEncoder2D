@@ -13,9 +13,7 @@ import pandas as pd
 try:
     import cv2
 except ImportError:
-    st.error("OpenCV import error. Installing dependencies...")
-    os.system("apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0")
-    import cv2
+    st.error("OpenCV import error. Please make sure packages.txt includes: libgl1 libgl1-mesa-glx libglib2.0-0")
 
 # Detect environment - use PlaidML locally but mock on Streamlit Cloud
 try:
