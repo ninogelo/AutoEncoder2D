@@ -7,8 +7,15 @@ import streamlit as st
 from PIL import Image
 import gc
 from skimage.metrics import structural_similarity as ssim
-import cv2
 import pandas as pd
+
+# Safely import OpenCV
+try:
+    import cv2
+except ImportError:
+    st.error("OpenCV import error. Installing dependencies...")
+    os.system("apt-get update && apt-get install -y libgl1-mesa-glx libglib2.0-0")
+    import cv2
 
 # Detect environment - use PlaidML locally but mock on Streamlit Cloud
 try:
