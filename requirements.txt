@@ -1,4 +1,3 @@
-# Core requirements
 numpy>=1.19.0
 PyWavelets>=1.1.1
 matplotlib>=3.3.0
@@ -7,11 +6,5 @@ Pillow>=8.0.0
 scikit-image>=0.18.0
 opencv-python>=4.5.0
 pandas>=1.3.0
-
-# Deep learning requirements
-keras>=2.6.0
+keras>=2.4.0
 plaidml-keras>=0.7.0
-tensorflow>=2.6.0
-
-# Additional utilities
-scipy>=1.6.0
