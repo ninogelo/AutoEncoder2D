@@ -1,12 +1,7 @@
-# app.py
 import os
-os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
+import sys
 import numpy as np
 import pywt
-import plaidml.keras
-plaidml.keras.install_backend()
-import keras
-from keras.models import load_model
 import matplotlib.pyplot as plt
 import streamlit as st
 from PIL import Image
@@ -14,6 +9,58 @@ import gc
 from skimage.metrics import structural_similarity as ssim
 import cv2
 import pandas as pd
+
+# Detect environment - use PlaidML locally but mock on Streamlit Cloud
+try:
+    # Check if we're in the Streamlit Cloud environment (Python 3.12)
+    is_streamlit_cloud = sys.version_info.major == 3 and sys.version_info.minor >= 12
+    
+    if not is_streamlit_cloud:
+        # Local environment - use PlaidML
+        os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
+        import plaidml.keras
+        plaidml.keras.install_backend()
+        import keras
+        from keras.models import load_model
+        st.sidebar.success("Using PlaidML backend")
+    else:
+        # Streamlit Cloud - use mock implementation
+        raise ImportError("Running in Streamlit Cloud environment")
+except ImportError:
+    st.sidebar.warning("PlaidML not available - using simulation mode")
+
+# Load the trained autoencoder model
+@st.cache_resource
+def load_autoencoder_model():
+    try:
+        # Check if we can use the real model with PlaidML
+        try:
+            if 'keras' in sys.modules:
+                model = load_model('autoencoder_model.h5')
+                return model
+        except Exception as model_e:
+            st.warning(f"Could not load real model: {model_e}")
+            
+        # Use demonstration mode with simulated model
+        st.warning("Using demonstration mode with simulated model")
+        
+        # Create a mock model class
+        class MockModel:
+            def predict(self, input_array):
+                # This is a simple dummy implementation that returns a slightly modified version
+                # of the input to simulate compression and reconstruction
+                result = input_array.copy()
+                # Simulate some loss of high-frequency details
+                for c in range(result.shape[3]):
+                    result[0, :, :, c] = cv2.GaussianBlur(result[0, :, :, c], (5, 5), 0)
+                return result
+        
+        return MockModel()
+    
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
+        return None
+
 
 # Load the trained autoencoder model
 @st.cache_resource
