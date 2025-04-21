@@ -67,15 +67,6 @@ def load_autoencoder_model():
         return None
 
 
-# Load the trained autoencoder model
-@st.cache_resource
-def load_autoencoder_model():
-    try:
-        model = load_model('autoencoder_model.h5')
-        return model
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
 
 # DWT functions
 def perform_2d_dwt(image, wavelet='haar'):
