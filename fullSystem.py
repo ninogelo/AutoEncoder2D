@@ -315,12 +315,12 @@ def main():
                 # Changed from "DWT (LL Band)" to just "DWT"
                 st.subheader("DWT")
                 # Using reconstructed_dwt instead of cA_norm to show actual DWT output
-                st.image(reconstructed_dwt, use_container_width=True)
+                st.image(dwt_with_ae , use_container_width=True)
 
             with col3:
                 # Changed from "DWT WITH AE" to "PROPOSED"
                 st.subheader("PROPOSED")
-                st.image(dwt_with_ae, use_container_width=True)
+                st.image(reconstructed_dwt, use_container_width=True)
 
             # Second row - heatmaps only (2 columns)
             col4, col5 = st.columns(2)
